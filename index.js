@@ -9,8 +9,6 @@ console.log(process.env.TOKEN);
 
 const client = new Discord.Client();
 
-//const productionEnv = !(process.env.ENVIRONMENT === "DEV");
-
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
