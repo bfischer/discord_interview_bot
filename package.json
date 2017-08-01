@@ -1,0 +1,14 @@
+{
+  "name": "interview-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for interview scheduling.",
+  "main": "index.js",
+  "author": "Blake",
+  "dependencies": {
+    "discord": "^0.8.2",
+    "discord.io": "^2.5.1",
+    "discord.js": "^11.1.0",
+    "dotenv": "^4.0.0",
+    "winston": "^2.3.1"
+  }
+}
