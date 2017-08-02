@@ -34,7 +34,7 @@ module.exports = function handleMessage(message) {
         message.reply('Scheduled!');
     }
 
-    function unscheduleInterivew(interviewer, interviewee) {
+    function unscheduleInterview(interviewer, interviewee) {
         if(interviewers.hasOwnProperty(interviewer)) {
             let obj = interviewers[interviewer];
 
@@ -85,6 +85,17 @@ module.exports = function handleMessage(message) {
                 
                 case 'show':
                     showUpcomingInterviews(message.author.username);
+                    break;
+
+                case 'unschedule':
+                    if(messageContents.length < 3) {
+                        showError();
+                    }
+                    else {
+                        let interviewee = messageContents[2];
+
+                        unscheduleInterview(message.author.username, interviewee);
+                    }
                     break;
 
                 default:
