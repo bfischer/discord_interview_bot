@@ -6,8 +6,8 @@ module.exports = function handleMessage(message) {
     function showHelpMenu() {
         message.reply(
             'Hi! Here is a list of available commands:\n' +
-            '"!interview schedule [interviewer] [interviewee] [time] - schedule an interview\n' +
-            '"!interview unschedule [interviewer] [interviewee] - unschedule an interview\n' + 
+            '"!interview schedule [interviewee] [time] - schedule an interview\n' +
+            '"!interview unschedule [interviewee] - unschedule an interview\n' + 
             '"!interview show" - show your upcoming interviews\n'
         );
     };
@@ -32,6 +32,7 @@ module.exports = function handleMessage(message) {
         }
 
         message.reply('Scheduled!');
+        showUpcomingInterviews(interviewer);
     }
 
     function unscheduleInterview(interviewer, interviewee) {
@@ -46,10 +47,10 @@ module.exports = function handleMessage(message) {
         showUpcomingInterviews(interviewer);
     }
 
-    function showUpcomingInterviews(interviewer) {
+    function showUpcomingInterviewees(interviewer) {
         if(interviewers.hasOwnProperty(interviewer)){
             let obj = interviewers[interviewer];
-            let reply = 'Here are your upcoming interviews: \n';
+            let reply = 'Here are you upcoming interviewees: \n';
 
             for(var i in obj) {
                 reply += i + ' at ' + obj[i] + '\n';
@@ -59,6 +60,27 @@ module.exports = function handleMessage(message) {
         }
         else {
             message.reply('You currently have no scheduled interviews.');
+        }
+    }
+
+    function showUpcomingInterviews(interviewee) {
+        var reply = "";
+
+        for(var i in interviewers) {
+            let obj = interviewers[i];
+
+            if(obj.hasOwnProperty(interviewee)) {
+                let time = obj[interviewee];
+
+                reply += time + ' with ' + i;
+            }
+        }
+
+        if(reply !== "") {
+            message.reply(
+                'You have the following interviews scheduled:\n' +
+                reply
+            );            
         }
     }
 
@@ -84,6 +106,7 @@ module.exports = function handleMessage(message) {
                     break;
                 
                 case 'show':
+                    showUpcomingInterviewees(message.author.username);
                     showUpcomingInterviews(message.author.username);
                     break;
 
