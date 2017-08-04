@@ -1,4 +1,8 @@
+var moment = require('moment');
+var Scheduler = require('./scheduler.js');
+
 var interviewers = {};
+var scheduler = new Scheduler();
 
 module.exports = function handleMessage(message) {
     var messageContents = message.content.split(' ');
@@ -84,6 +88,25 @@ module.exports = function handleMessage(message) {
         }
     }
 
+    function setAvailability(interviewer, date, time) {
+        let parsedDate = moment(date);
+        let parsedTime = moment(time);
+
+
+        scheduler.setSchedule(interviewer, parsedDate);
+    }
+
+    function showAvailabilities() {
+        let str = scheduler.getAvailabilities();
+
+        if(str === '') {
+            message.reply('There are currently no openings.');
+        }
+        else {
+            message.reply(str);
+        }
+    }
+
     if (message.content.toLowerCase().startsWith('!interview')){
         if(messageContents.length > 1) {
             var command = messageContents[1];
@@ -120,6 +143,20 @@ module.exports = function handleMessage(message) {
                         unscheduleInterview(message.author.username, interviewee);
                     }
                     break;
+
+                case 'set-availability':
+                    if(messageContents.length < 4) {
+                        showError();
+                    }
+                    else {
+                        let date = messageContents[2];
+                        let time = messageContents[3];
+
+                        setAvailability(message.author.username, date, time);
+                    }
+
+                case 'get-availabilities':
+                    showAvailabilities();
 
                 default:
                     showHelpMenu();
